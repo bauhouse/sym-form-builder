@@ -19,3 +19,15 @@
 [submodule "extensions/debugdevkit"]
 	path = extensions/debugdevkit
 	url = git://github.com/symphony/debugdevkit.git
+[submodule "extensions/asdc"]
+	path = extensions/asdc
+	url = git://github.com/pointybeard/asdc.git
+[submodule "extensions/databasemanipulator"]
+	path = extensions/databasemanipulator
+	url = git://github.com/yourheropaul/databasemanipulator.git
+[submodule "extensions/eventex"]
+	path = extensions/eventex
+	url = git://github.com/yourheropaul/eventex.git
+[submodule "extensions/section_schemas"]
+	path = extensions/section_schemas
+	url = git://github.com/nickdunn/section_schemas.git
