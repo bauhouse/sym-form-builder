@@ -13,9 +13,7 @@
 		<xsl:call-template name="header"/>
 		<h2><xsl:value-of select="$page-title" /></h2>
 				
-		<xsl:call-template name="form:validation-summary">
-			<xsl:with-param name="event" select="$event"/>
-		</xsl:call-template>
+		<xsl:call-template name="form:validation-summary"/>
 		
 		<xsl:if test="*[@location='main']">
 			<fieldset class="primary">			
@@ -59,12 +57,10 @@
 		
 		<xsl:when test="@type='input' or @type='order_entries' or @type='number'">
 			<xsl:call-template name="form:label">
-				<xsl:with-param name="event" select="$event"/>
 				<xsl:with-param name="for" select="name()"/>
 				<xsl:with-param name="text" select="@label"/>
 				<xsl:with-param name="child">
 					<xsl:call-template name="form:input">
-						<xsl:with-param name="event" select="$event"/>
 						<xsl:with-param name="handle" select="name()"/>
 					</xsl:call-template>
 				</xsl:with-param>
@@ -73,12 +69,10 @@
 		
 		<xsl:when test="@type='upload' or @type='hashupload'">
 			<xsl:call-template name="form:label">
-				<xsl:with-param name="event" select="$event"/>
 				<xsl:with-param name="for" select="name()"/>
 				<xsl:with-param name="text" select="@label"/>
 				<xsl:with-param name="child">
 					<xsl:call-template name="form:input">
-						<xsl:with-param name="event" select="$event"/>
 						<xsl:with-param name="handle" select="name()"/>
 						<xsl:with-param name="type" select="'file'"/>
 					</xsl:call-template>
@@ -88,12 +82,10 @@
 		
 		<xsl:when test="@type='textarea'">
 			<xsl:call-template name="form:label">
-				<xsl:with-param name="event" select="$event"/>
 				<xsl:with-param name="for" select="name()"/>
 				<xsl:with-param name="text" select="@label"/>
 				<xsl:with-param name="child">
 					<xsl:call-template name="form:textarea">
-						<xsl:with-param name="event" select="$event"/>
 						<xsl:with-param name="handle" select="name()"/>
 						<xsl:with-param name="rows" select="size"/>
 					</xsl:call-template>
@@ -103,12 +95,10 @@
 		
 		<xsl:when test="@type='select' or @type='selectbox_link' or @type='pages' or @type='author'">
 			<xsl:call-template name="form:label">
-				<xsl:with-param name="event" select="$event"/>
 				<xsl:with-param name="for" select="name()"/>
 				<xsl:with-param name="text" select="@label"/>
 				<xsl:with-param name="child">
 					<xsl:call-template name="form:select">
-						<xsl:with-param name="event" select="$event"/>
 						<xsl:with-param name="handle" select="name()"/>
 						<xsl:with-param name="allow-multiple" select="allow-multiple-selection"/>
 						<xsl:with-param name="options" select="options/*"/>
@@ -119,12 +109,10 @@
 		
 		<xsl:when test="@type='taglist'">
 			<xsl:call-template name="form:label">
-				<xsl:with-param name="event" select="$event"/>
 				<xsl:with-param name="for" select="name()"/>
 				<xsl:with-param name="text" select="@label"/>
 				<xsl:with-param name="child">
 					<xsl:call-template name="form:input">
-						<xsl:with-param name="event" select="$event"/>
 						<xsl:with-param name="handle" select="name()"/>
 					</xsl:call-template>					
 					<xsl:for-each select="options/option">
@@ -137,7 +125,6 @@
 		
 		<xsl:when test="@type='checkbox'">
 			<xsl:call-template name="form:label">
-				<xsl:with-param name="event" select="$event"/>
 				<xsl:with-param name="for" select="name()"/>
 				<xsl:with-param name="class" select="'checkbox'"/>
 				<xsl:with-param name="text">
@@ -152,7 +139,6 @@
 				</xsl:with-param>
 				<xsl:with-param name="child">
 					<xsl:call-template name="form:checkbox">
-						<xsl:with-param name="event" select="$event"/>
 						<xsl:with-param name="handle" select="name()"/>
 						<xsl:with-param name="checked-by-default">
 							<xsl:if test="default_state='on'">

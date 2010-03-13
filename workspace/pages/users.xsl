@@ -10,7 +10,7 @@
 <xsl:import href="../utilities/section-schemas.xsl"/>
 
 <!-- Define a global variable pointing to your Event -->
-<xsl:variable name="event" select="/data/events/save-user"/>
+<xsl:variable name="form:event" select="/data/events/save-user"/>
 <xsl:variable name="event-action" select="'save-user'"/>
 
 <xsl:template match="data">
