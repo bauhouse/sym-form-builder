@@ -36,16 +36,21 @@
 		<div class="actions">
 			<input name="action[{$event-action}]" accesskey="s" type="submit" value="Create Entry" />
 		</div>
-		<ul id="usr">
-			<li>
-				<a href="{$root}/symphony/system/authors/edit/1/">Stephen Bau</a>
-			</li>
-			<li>
-				<a href="{$root}/symphony/logout/">Logout</a>
-			</li>
-		</ul>
+		
+		<xsl:apply-templates select="/data/events/login-info[@logged-in='true']"/>
 	</form>
 	
+</xsl:template>
+
+<xsl:template match="login-info">
+	<ul id="usr">
+		<li>
+			<a href="{$root}/symphony/system/authors/edit/{@id}/"><xsl:value-of select="name"/></a>
+		</li>
+		<li>
+			<a href="{$root}/symphony/logout/">Logout</a>
+		</li>
+	</ul>
 </xsl:template>
 
 <xsl:template match="*" mode="control">
