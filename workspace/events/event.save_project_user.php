@@ -2,14 +2,12 @@
 
 	require_once(EXTENSIONS . '/eventex/lib/class.eventex.php');
 	
-	Class eventsave_project_user extends Event{
+	Class eventsave_project_user extends EventEx {
 		
-		const ROOTELEMENT = 'save-project-user';
-		
-		public $eParamFILTERS = array(
-			
-		);
-			
+		public static function getSource(){
+			return array("projects", "users");
+		}
+
 		public static function about(){
 			return array(
 					 'name' => 'Save Project User',
@@ -22,23 +20,17 @@
 					 'trigger-condition' => 'action[save-project-user]');	
 		}
 
-		public static function getSource(){
-			return array("projects", "users");
-		}
-
-		// When the documentation method is not included, viewing the event results in a blank page
+		// When the documentation method is not included, viewing the event results in a blank page, so...
 		public static function documentation(){
 			return '
         <h3>An EventEx Event</h3>
-        <p>The purpose of which is to demonstrate the ability to save to multiple entries using the EventEx extension.</p>';
-		}
-		
-		public function load(){			
-			if(isset($_POST['action']['save-project-user'])) return $this->__trigger();
+        <p>To demonstrate the ability to save entries to multiple sections (in this case, Projects and Users) using the EventEx extension.</p>';
 		}
 		
 		protected function __trigger(){
-			include(TOOLKIT . '/events/event.section.php');
+			// this returns a Symphony XMlElement object
+			$result = $this->updateNamedSections(self::getSource());
+			
 			return $result;
 		}		
 

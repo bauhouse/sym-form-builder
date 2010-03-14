@@ -375,11 +375,13 @@ INSERT INTO `tbl_fields` (`id`, `label`, `element_name`, `type`, `parent_section
 INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (1, NULL, 'Home', 'home', NULL, NULL, 'navigation,section_schema_users', 'login,save_project,save_user', 1);
 INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (2, NULL, 'Users', 'users', NULL, 'action/id', 'navigation,section_schema_users', 'login,save_user', 2);
 INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (3, NULL, 'Projects', 'projects', NULL, 'action/id', 'navigation,section_schema_projects', 'login,save_project', 3);
+INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (4, NULL, 'Project User', 'project-user', NULL, NULL, 'navigation,section_schema_projects,section_schema_users', 'login,save_project_user', 4);
 
 -- *** DATA: `tbl_pages_types` ***
 INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (11, 1, 'index');
 INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (12, 2, 'admin');
 INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (13, 3, 'admin');
+INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (14, 4, 'admin');
 
 -- *** DATA: `tbl_sections` ***
 INSERT INTO `tbl_sections` (`id`, `name`, `handle`, `sortorder`, `entry_order`, `entry_order_direction`, `hidden`, `navigation_group`) VALUES (1, 'Users', 'users', 1, NULL, 'asc', 'no', 'Users');
