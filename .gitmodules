@@ -31,3 +31,9 @@
 [submodule "extensions/section_schemas"]
 	path = extensions/section_schemas
 	url = git://github.com/nickdunn/section_schemas.git
+[submodule "extensions/color_chooser_field"]
+	path = extensions/color_chooser_field
+	url = git://github.com/MrBlank/symphony_color_chooser.git
+[submodule "extensions/order_entries"]
+	path = extensions/order_entries
+	url = git://github.com/nickdunn/order_entries.git
