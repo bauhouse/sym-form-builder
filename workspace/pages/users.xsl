@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:exsl="http://exslt.org/common"
-	xmlns:form="http://nick-dunn.co.uk/xslt/form-controls"
-	extension-element-prefixes="exsl form">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:import href="../utilities/master.xsl"/>
-<xsl:import href="../utilities/form-controls.xsl"/>
-<xsl:import href="../utilities/section-schemas.xsl"/>
+<xsl:output method="xml"
+	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
+	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+	omit-xml-declaration="yes"
+	encoding="UTF-8"
+	indent="yes" />
 
-<!-- Define a global variable pointing to your Event -->
-<xsl:variable name="event-action" select="'save-user'"/>
-<xsl:variable name="form:event" select="/data/events/*[name()=$event-action]"/>
-
-<xsl:template match="data">
-	<xsl:apply-templates select="section-schema[@handle='users']" mode="form"/>
+<xsl:template match="/">
+	
 </xsl:template>
-
 </xsl:stylesheet>

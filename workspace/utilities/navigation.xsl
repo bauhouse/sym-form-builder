@@ -17,40 +17,61 @@
 </xsl:param>
 
 <xsl:template match="navigation">
-  <ul id="nav">
-    <xsl:choose>
-      <xsl:when test="$is-logged-in">
-        <xsl:apply-templates select="page[not(types/type = 'hidden') and not(types/type = 'login')]"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="page[not(types/type = 'hidden') and not(types/type = 'admin')]"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </ul>
+	<ul id="nav">
+		<xsl:choose>
+			<xsl:when test="$is-logged-in">
+				<xsl:apply-templates select="page[not(types/type = 'hidden')and types/type = 'front-end']" mode="front-end"/>
+				<xsl:apply-templates select="page[not(types/type = 'hidden') and not(types/type = 'front-end')]" mode="admin"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="page[not(types/type = 'hidden') and not(types/type = 'admin')]" mode="front-end"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</ul>
 </xsl:template>
 
 <xsl:template match="page">
-  <li>
-    <a href="{$root}/{@handle}/">
-      <xsl:if test="@handle = $current-page or 
-        (@handle = $current-page and $page-type = $current-page) or 
-        (@handle = $parent-path and $page-type = $parent-path)">
-        <xsl:attribute name="class">active</xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="name"/>
-    </a>
-  </li>
+	<li>
+		<a href="{$root}/{@handle}/">
+			<xsl:if test="@handle = $current-page or 
+				(@handle = $current-page and $page-type = $current-page) or 
+				(@handle = $parent-path and $page-type = $parent-path)">
+				<xsl:attribute name="class">active</xsl:attribute>
+			</xsl:if>
+			<xsl:value-of select="name"/>
+		</a>
+	</li>
+</xsl:template>
+
+<xsl:template match="page" mode="admin">
+	<li class="{@handle}">
+		<xsl:if test="@handle = $current-page or page/@handle = $current-page">
+			<xsl:attribute name="class"><xsl:value-of select="@handle"/> active</xsl:attribute>
+		</xsl:if>
+		<xsl:value-of select="name"/>
+		<xsl:if test="page">
+			<ul><xsl:apply-templates select="page" mode="admin-pages"/></ul>
+		</xsl:if>
+	</li>
+</xsl:template>
+
+<xsl:template match="page" mode="admin-pages">
+	<li>
+		<a href="{$root}/{../@handle}/{@handle}/">
+			<xsl:value-of select="name"/>
+		</a>
+	</li>
 </xsl:template>
 
 <xsl:template match="page" mode="front-end">
-  <li class="front-end">
-    <a href="{$root}/{@handle}/">
-      <xsl:if test="@handle = $current-page">
-        <xsl:attribute name="class">active</xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="name"/>
-    </a>
-  </li>
+	<li class="front-end">
+		<a href="{$root}/{@handle}/">
+			<xsl:if test="@handle = $current-page">
+				<xsl:attribute name="class">active</xsl:attribute>
+			</xsl:if>
+			<xsl:value-of select="name"/>
+		</a>
+	</li>
 </xsl:template>
 
 </xsl:stylesheet>

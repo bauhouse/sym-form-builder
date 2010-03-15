@@ -2,10 +2,10 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:import href="../utilities/master.xsl"/>
+<xsl:import href="../utilities/frontend-master.xsl"/>
 
 <xsl:template match="data">
-	<h2><xsl:value-of select="heading"/></h2>
+	<h2><xsl:value-of select="$page-title"/></h2>
 	<fieldset class="primary">
 		<xsl:call-template name="about-symphony"/>
 	</fieldset>
@@ -16,6 +16,7 @@
 					<h2>Login Status</h2>
 					<p>You have successfully logged in as <xsl:value-of select="$name"/>, <xsl:value-of select="$user-type"/>.</p>
 					<p>You can log out by clicking on the <a href="{$root}/symphony/logout/">Logout</a> link here or at the bottom of the page.</p>
+					<xsl:call-template name="when-logged-in"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<h2>Login</h2>
@@ -35,6 +36,11 @@
 	</div>
 </xsl:template>
 
+<xsl:template name="when-logged-in">
+	<h3>Now That You Are Logged In</h3>
+	<p>You'll notice that you have a new <a href="{$root}/dashboard/">Dashboard</a> menu item in the navigation. Go to the Dashboard page to find out more about how to build your own front end forms in Symphony.</p>
+</xsl:template>
+	
 <xsl:template name="about-symphony">
 	<h3>About Symphony</h3>
 	<p><a href="http://symphony-cms.com/">Symphony</a> is an Open Source content management system made for web developers. It gives you all the power and flexibility you’ll need, while keeping out of your way.</p>
