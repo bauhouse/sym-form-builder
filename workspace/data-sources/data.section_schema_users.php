@@ -24,10 +24,10 @@
 					 'name' => 'Section Schema: Users',
 					 'author' => array(
 							'name' => 'Stephen Bau',
-							'website' => 'http://home/sym/eventex',
+							'website' => 'http://home/sym/form-builder',
 							'email' => 'bauhouse@gmail.com'),
 					 'version' => '1.0',
-					 'release-date' => '2010-03-10T18:43:54+00:00');	
+					 'release-date' => '2010-03-15T03:14:44+00:00');	
 		}
 		
 		public function getSource(){

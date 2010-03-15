@@ -5,7 +5,7 @@
 	require_once(TOOLKIT . '/class.fieldmanager.php');
 	require_once(TOOLKIT . '/class.entrymanager.php');
 	
-	Class datasourcesection_schema_projects extends Datasource{
+	Class datasourcesection_schema_messages extends Datasource{
 		
 		public $dsParamROOTELEMENT = 'section-schema';
 		
@@ -21,7 +21,7 @@
 		
 		public function about(){
 			return array(
-					 'name' => 'Section Schema: Projects',
+					 'name' => 'Section Schema: Messages',
 					 'author' => array(
 							'name' => 'Stephen Bau',
 							'website' => 'http://home/sym/form-builder',
@@ -31,7 +31,7 @@
 		}
 		
 		public function getSource(){
-			return '2';
+			return '5';
 		}
 		
 		public function allowEditorToParse(){
