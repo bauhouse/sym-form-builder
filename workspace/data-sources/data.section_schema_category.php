@@ -27,7 +27,7 @@
 							'website' => 'http://home/sym/form-builder',
 							'email' => 'bauhouse@gmail.com'),
 					 'version' => '1.0',
-					 'release-date' => '2010-03-15T03:14:44+00:00');	
+					 'release-date' => '2010-03-15T19:03:38+00:00');	
 		}
 		
 		public function getSource(){
