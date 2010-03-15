@@ -1,95 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:exsl="http://exslt.org/common"
-	xmlns:form="http://nick-dunn.co.uk/xslt/form-controls"
-	extension-element-prefixes="exsl form">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="../utilities/master.xsl"/>
-<xsl:import href="../utilities/form-controls.xsl"/>
-
-<!-- Define a global variable pointing to your Event -->
-<xsl:variable name="form:event" select="/data/events/save-user"/>
 
 <xsl:template match="data">
-
-    <form action="" method="post">
-		<xsl:call-template name="header"/>
-
-		<h2><xsl:value-of select="$page-title" /></h2>
-		<xsl:call-template name="form:validation-summary"/>
-		<fieldset class="primary">
-			<xsl:for-each select="/data/section-schema[@handle = 'users']/*[@location = 'main']">
-				<xsl:call-template name="symphony-field" />
-			</xsl:for-each>
-		</fieldset>
-		<fieldset class="secondary">
-			<xsl:for-each select="/data/section-schema[@handle = 'users']/*[@location = 'sidebar']">
-				<xsl:call-template name="symphony-field" />
-			</xsl:for-each>
-		</fieldset>
-
-		<div class="actions">
-			<input name="action[save-user]" accesskey="s" type="submit" value="Create Entry" />
-		</div>
-		<ul id="usr">
-			<li>
-				<a href="{$root}/symphony/system/authors/edit/1/">Stephen Bau</a>
-			</li>
-			<li>
-				<a href="{$root}/symphony/logout/">Logout</a>
-			</li>
-		</ul>
-	</form>
-
-</xsl:template>
-
-<xsl:template name="symphony-field">
-	<div>
-		<xsl:attribute name="class">
-			<xsl:text>field </xsl:text>
-			<xsl:value-of select="concat('field-', @type)" />
-			<xsl:if test="@required = 'yes'"><xsl:text> </xsl:text>required</xsl:if>
-		</xsl:attribute>
-		<label><xsl:value-of select="@label" />
+	<h2><xsl:value-of select="heading"/></h2>
+	<fieldset class="primary">
+		<xsl:call-template name="about-symphony"/>
+	</fieldset>
+	<fieldset class="secondary">
+		<div class="panel">
 			<xsl:choose>
-				<xsl:when test="@type = 'input'">
-					<xsl:if test="@required = 'no'"><i>Optional</i></xsl:if>
-					<xsl:call-template name="form:input">
-						<xsl:with-param name="handle" select="name(current())"/>
-					</xsl:call-template>
+				<xsl:when test="$is-logged-in">
+					<h2>Login Status</h2>
+					<p>You have successfully logged in as <xsl:value-of select="$name"/>, <xsl:value-of select="$user-type"/>.</p>
+					<p>You can log out by clicking on the <a href="{$root}/symphony/logout/">Logout</a> link here or at the bottom of the page.</p>
 				</xsl:when>
-				<xsl:when test="@type = 'select' or @type = 'selectbox_link'">
-					<xsl:choose>
-						<xsl:when test="allow-multiple-selection = 'yes'">
-							<xsl:call-template name="form:select">
-								<xsl:with-param name="handle" select="name(current())"/>
-								<xsl:with-param name="options" select="options/option"/>
-								<xsl:with-param name="value" select="options/option[1]"/>
-								<xsl:with-param name="allow-multiple" select="1"/>
-							</xsl:call-template>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:call-template name="form:select">
-								<xsl:with-param name="handle" select="name(current())"/>
-								<xsl:with-param name="options" select="options/option"/>
-								<xsl:with-param name="value" select="options/option[1]"/>
-								<xsl:with-param name="allow-multiple" select="0"/>
-							</xsl:call-template>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>
-				<xsl:when test="@type = 'textarea'">
-					<xsl:if test="@required = 'no'"><i>Optional</i></xsl:if>
-					<xsl:call-template name="form:textarea">
-					    <xsl:with-param name="handle" select="name(current())"/>
-					    <xsl:with-param name="rows" select="'15'"/>
-					    <xsl:with-param name="cols" select="'50'"/>
-					</xsl:call-template>
-				</xsl:when>
+				<xsl:otherwise>
+					<h2>Login</h2>
+					<label>Username
+						<input name="username" type="text"/>
+					</label>
+					<label>Password
+						<input name="password" type="password"/>
+					</label>
+					<input name="action[login]" type="submit" value="Login"/>
+					<input name="redirect" type="hidden" value="{$root}/"/>
+				</xsl:otherwise>
 			</xsl:choose>
-		</label>
+		</div>
+	</fieldset>
+	<div class="actions">
 	</div>
 </xsl:template>
 
+<xsl:template name="about-symphony">
+	<h3>About Symphony</h3>
+	<p><a href="http://symphony-cms.com/">Symphony</a> is an Open Source content management system made for web developers. It gives you all the power and flexibility you’ll need, while keeping out of your way.</p>
+	
+	<h3>Designed to do things your way</h3>
+	<p>Symphony lets you organise everything the way you like, from your publishing environment to your website’s URL structure. Built to be versatile and customisable, Symphony really is what you make of it.</p>
+	
+	<h3>Powered by XML and XSLT</h3>
+	<p>Symphony’s templating engine is pure XSLT goodness. XSLT is a standard recommended by the W3C, so learning Symphony means that you’re learning skills that you can also use outside of the system. If you already know the XML and CSS standards, then chances are you should be able to quickly pick up XSLT.</p>
+	<p>Symphony lets you to create small blocks of XSLT code called utilities, which you can use as building blocks to construct your site’s pages. Due to the nature of XSLT, these utilities are highly reusable, so the next time you’re developing a website you’ll probably find you’ve already done half the work.</p>
+	
+	<h3>Symphony Resources</h3>
+	<p>The Symphony <a href="http://symphony-cms.com/discuss/">community forum</a> is full of friendly and knowledgeable Symphony users, and the Symphony team are always quick to respond, so it’s a great place to go if you have questions.</p>
+</xsl:template>
+	
 </xsl:stylesheet>

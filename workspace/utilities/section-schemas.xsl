@@ -8,47 +8,28 @@
 <xsl:import href="../utilities/form-controls.xsl"/>
 
 <xsl:template match="section-schema" mode="form">
+	<h2><xsl:value-of select="$page-title"/></h2>
+	<xsl:call-template name="form:validation-summary"/>
 
-	<form action="" method="post">
-		<xsl:call-template name="header"/>
-		<h2><xsl:value-of select="$page-title" /></h2>
-				
-		<xsl:call-template name="form:validation-summary"/>
-		
-		<xsl:if test="*[@location='main']">
-			<fieldset class="primary">			
-				<xsl:apply-templates select="*[@location='main']" mode="control">
-					<xsl:sort select="@sortorder" data-type="number" order="ascending"/>
-				</xsl:apply-templates>
-			</fieldset>
-		</xsl:if>
-		
-		<xsl:if test="*[@location='sidebar']">
-			<fieldset class="secondary">			
-				<xsl:apply-templates select="*[@location='sidebar']" mode="control">
-					<xsl:sort select="@sortorder" data-type="number" order="ascending"/>
-				</xsl:apply-templates>
-			</fieldset>
-		</xsl:if>
-
-		<div class="actions">
-			<input name="action[{$event-action}]" accesskey="s" type="submit" value="Create Entry" />
-		</div>
-		
-		<xsl:apply-templates select="/data/events/login-info[@logged-in='true']"/>
-	</form>
+	<xsl:if test="*[@location='main']">
+		<fieldset class="primary">			
+			<xsl:apply-templates select="*[@location='main']" mode="control">
+				<xsl:sort select="@sortorder" data-type="number" order="ascending"/>
+			</xsl:apply-templates>
+		</fieldset>
+	</xsl:if>
 	
-</xsl:template>
+	<xsl:if test="*[@location='sidebar']">
+		<fieldset class="secondary">			
+			<xsl:apply-templates select="*[@location='sidebar']" mode="control">
+				<xsl:sort select="@sortorder" data-type="number" order="ascending"/>
+			</xsl:apply-templates>
+		</fieldset>
+	</xsl:if>
 
-<xsl:template match="login-info">
-	<ul id="usr">
-		<li>
-			<a href="{$root}/symphony/system/authors/edit/{@id}/"><xsl:value-of select="name"/></a>
-		</li>
-		<li>
-			<a href="{$root}/symphony/logout/">Logout</a>
-		</li>
-	</ul>
+	<div class="actions">
+		<input name="action[{$event-action}]" accesskey="s" type="submit" value="Create Entry" />
+	</div>
 </xsl:template>
 
 <xsl:template match="*" mode="control">
