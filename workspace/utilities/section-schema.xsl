@@ -28,11 +28,22 @@
 	</xsl:if>
 
 	<div class="actions">
-		<input name="action[{$event-action}]" accesskey="s" type="submit" value="Create Entry" />
+		<xsl:choose>
+			<xsl:when test="$id">
+				<input name="id" type="hidden" value="{$id}" />
+				<input name="action[{$event-action}]" accesskey="s" type="submit" value="Save Changes" />
+			</xsl:when>
+			<xsl:otherwise>
+				<input name="action[{$event-action}]" accesskey="s" type="submit" value="Create Entry" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</div>
 </xsl:template>
 
 <xsl:template match="*" mode="control">
+	<xsl:param name="entry-data" select="$section-data[@id = $id]"/>
+	<xsl:param name="field-name" select="name(.)"/>
+	<xsl:param name="field-value" select="$entry-data/*[name() = $field-name]"/>
 	
 	<xsl:choose>
 		
@@ -43,6 +54,7 @@
 				<xsl:with-param name="child">
 					<xsl:call-template name="form:input">
 						<xsl:with-param name="handle" select="name()"/>
+						<xsl:with-param name="value" select="$field-value"/>
 					</xsl:call-template>
 				</xsl:with-param>
 			</xsl:call-template>	
@@ -56,6 +68,7 @@
 					<xsl:call-template name="form:input">
 						<xsl:with-param name="handle" select="name()"/>
 						<xsl:with-param name="type" select="'file'"/>
+						<xsl:with-param name="value" select="$field-value"/>
 					</xsl:call-template>
 				</xsl:with-param>
 			</xsl:call-template>	
@@ -69,6 +82,7 @@
 					<xsl:call-template name="form:textarea">
 						<xsl:with-param name="handle" select="name()"/>
 						<xsl:with-param name="rows" select="size"/>
+						<xsl:with-param name="value" select="$field-value"/>
 					</xsl:call-template>
 				</xsl:with-param>
 			</xsl:call-template>
@@ -83,6 +97,7 @@
 						<xsl:with-param name="handle" select="name()"/>
 						<xsl:with-param name="allow-multiple" select="allow-multiple-selection"/>
 						<xsl:with-param name="options" select="options/*"/>
+						<xsl:with-param name="value" select="$field-value"/>
 					</xsl:call-template>
 				</xsl:with-param>
 			</xsl:call-template>
@@ -95,6 +110,7 @@
 				<xsl:with-param name="child">
 					<xsl:call-template name="form:input">
 						<xsl:with-param name="handle" select="name()"/>
+						<xsl:with-param name="value" select="$field-value"/>
 					</xsl:call-template>					
 					<xsl:for-each select="options/option">
 						<span><xsl:value-of select="."/></span>
@@ -126,6 +142,7 @@
 								<xsl:text>yes</xsl:text>
 							</xsl:if>
 						</xsl:with-param>
+						<xsl:with-param name="value" select="$field-value"/>
 					</xsl:call-template>
 				</xsl:with-param>
 				<xsl:with-param name="child-position" select="'before'"/>
