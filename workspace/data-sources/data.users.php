@@ -19,7 +19,8 @@
 				'username',
 				'role',
 				'name',
-				'email'
+				'email',
+				'anonymous'
 		);
 
 		public function __construct(&$parent, $env=NULL, $process_params=true){
@@ -35,7 +36,7 @@
 							'website' => 'http://home/sym/form-builder',
 							'email' => 'bauhouse@gmail.com'),
 					 'version' => '1.0',
-					 'release-date' => '2010-03-15T14:23:35+00:00');	
+					 'release-date' => '2010-03-16T06:30:26+00:00');	
 		}
 		
 		public function getSource(){

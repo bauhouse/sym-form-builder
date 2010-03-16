@@ -17,11 +17,12 @@
 		
 		public $dsParamINCLUDEDELEMENTS = array(
 				'title',
-				'background-color',
 				'text-color',
+				'background-color',
 				'dashboard',
 				'issues',
 				'milestones',
+				'projects',
 				'finished',
 				'order'
 		);
@@ -39,7 +40,7 @@
 							'website' => 'http://home/sym/form-builder',
 							'email' => 'bauhouse@gmail.com'),
 					 'version' => '1.0',
-					 'release-date' => '2010-03-15T14:39:41+00:00');	
+					 'release-date' => '2010-03-16T06:28:42+00:00');	
 		}
 		
 		public function getSource(){
