@@ -45,7 +45,7 @@
 
 <xsl:template match="page" mode="admin">
 	<li class="{@handle}">
-		<xsl:if test="@handle = $current-page or page/@handle = $current-page">
+		<xsl:if test="page[@id = $current-page-id]/@handle = $current-page">
 			<xsl:attribute name="class"><xsl:value-of select="@handle"/> active</xsl:attribute>
 		</xsl:if>
 		<xsl:value-of select="name"/>

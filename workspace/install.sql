@@ -1210,6 +1210,10 @@ INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `d
 INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (15, 14, 'Status', 'status', 'filters', 'action/id', 'navigation,section_schema_status,status', 'login,save_status', 9);
 INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (16, 14, 'Priority', 'priority', 'filters', 'action/id', 'navigation,priorities,section_schema_priority', 'login,save_priority', 10);
 INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (17, 14, 'Category', 'category', 'filters', 'action/id', 'categories,navigation,section_schema_category', 'login,save_category', 11);
+INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (18, NULL, 'Admin', 'admin', NULL, NULL, 'navigation', 'login', 17);
+INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (19, 18, 'Projects', 'projects', 'admin', 'action/id', 'navigation,projects,section_schema_projects', 'login,save_project', 18);
+INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (20, 18, 'Milestones', 'milestones', 'admin', 'action/id', 'milestones,navigation,section_schema_milestones', 'login,save_milestone', 19);
+INSERT INTO `tbl_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`) VALUES (21, 18, 'Issues', 'issues', 'admin', 'action/id', 'issues,navigation,section_schema_issues', 'login,save_issue', 20);
 
 -- *** DATA: `tbl_pages_types` ***
 INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (42, 1, 'index');
@@ -1246,6 +1250,14 @@ INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (131, 12, 'sectio
 INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (132, 13, 'admin');
 INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (136, 16, 'admin');
 INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (138, 17, 'admin');
+INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (160, 18, 'admin');
+INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (153, 19, 'section');
+INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (152, 19, 'admin');
+INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (154, 20, 'admin');
+INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (155, 20, 'section');
+INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (159, 21, 'section');
+INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (158, 21, 'admin');
+INSERT INTO `tbl_pages_types` (`id`, `page_id`, `type`) VALUES (161, 18, 'group');
 
 -- *** DATA: `tbl_sections` ***
 INSERT INTO `tbl_sections` (`id`, `name`, `handle`, `sortorder`, `entry_order`, `entry_order_direction`, `hidden`, `navigation_group`) VALUES (1, 'Users', 'users', 7, NULL, 'asc', 'no', 'Users');
