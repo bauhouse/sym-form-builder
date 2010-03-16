@@ -43,7 +43,7 @@
 			<script type="text/javascript" src="{$root}/symphony/assets/admin.js"></script>
 		</head>
 		<body class="{$page-type}">
-			<form action="" method="post">
+			<form action="" method="post" enctype="multipart/form-data">
 				<xsl:if test="/data/events/*[@result = 'success']">
 					<p id="notice" class="success">Entry updated at <abbr class="timeago" title="{$day-abbr}, {$this-day} {$month-abbr} {$this-year} {$current-time}:00 {$timezone}"><xsl:value-of select="$this-time"/></abbr>. <a href="{$root}/{$root-page}/{$current-page}/new/">Create another?</a> <a href="{$root}/{$root-page}/{$current-page}/">View all Entries</a></p>
 				</xsl:if>

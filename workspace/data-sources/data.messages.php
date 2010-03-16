@@ -16,7 +16,7 @@
 		);
 		
 		public $dsParamINCLUDEDELEMENTS = array(
-				'description',
+				'description: unformatted',
 				'date',
 				'creator',
 				'milestone',
@@ -40,7 +40,7 @@
 							'website' => 'http://home/sym/form-builder',
 							'email' => 'bauhouse@gmail.com'),
 					 'version' => '1.0',
-					 'release-date' => '2010-03-15T14:26:50+00:00');	
+					 'release-date' => '2010-03-16T16:21:18+00:00');	
 		}
 		
 		public function getSource(){

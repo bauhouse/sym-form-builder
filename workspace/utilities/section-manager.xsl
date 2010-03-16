@@ -7,7 +7,7 @@
 
 <xsl:import href="../utilities/form-master.xsl"/>
 <xsl:import href="../utilities/form-controls.xsl"/>
-<xsl:import href="../utilities/section-schemas.xsl"/>
+<xsl:import href="../utilities/section-schema.xsl"/>
 
 <!-- A global variable pointing to your event is defined based on the event action -->
 <xsl:variable name="form:event" select="/data/events/*[name()=$event-action]"/>
