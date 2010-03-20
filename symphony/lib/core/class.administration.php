@@ -23,12 +23,16 @@
 		protected function __construct(){
 			parent::__construct();
 			$this->Profiler->sample('Engine Initialisation');
-
+			
+			// Need this part for backwards compatiblity			
+			$this->Database = Symphony::Database();
+			$this->Configuration = Symphony::Configuration();
+						
 			$this->_callback = NULL;
 		}
 		
 		public function isLoggedIn(){
-			if($_REQUEST['auth-token'] && in_array(strlen($_REQUEST['auth-token']), array(6, 8))) return $this->loginFromToken($_REQUEST['auth-token']);
+			if (isset($_REQUEST['auth-token']) && $_REQUEST['auth-token'] && in_array(strlen($_REQUEST['auth-token']), array(6, 8))) return $this->loginFromToken($_REQUEST['auth-token']);
 			
 			return parent::isLoggedIn();
 		}
@@ -52,12 +56,12 @@
 					if(!$section_handle){
 						
 						if($this->Author->isDeveloper()) redirect(URL . '/symphony/blueprints/sections/');
-						else redirect(URL);
+						else redirect(URL . "/symphony/system/authors/edit/".$this->Author->get('id')."/");
 						
 					}
 				
 					else{
-						redirect(URL . '/symphony/publish/' . $section_handle . '/');
+						redirect(URL . "/symphony/publish/{$section_handle}/");
 					}
 				
 				endif;
@@ -68,14 +72,14 @@
 			}
 				
 			include_once((isset($this->_callback['driverlocation']) ? $this->_callback['driverlocation'] : CONTENT) . '/content.' . $this->_callback['driver'] . '.php'); 			
-			$this->Page =& new $this->_callback['classname']($this);
+			$this->Page = new $this->_callback['classname']($this);
 
 			if(!$this->isLoggedIn() && $this->_callback['driver'] != 'login'){
 				if(is_callable(array($this->Page, 'handleFailedAuthorisation'))) $this->Page->handleFailedAuthorisation();
 				else{
 				
 					include_once(CONTENT . '/content.login.php'); 			
-					$this->Page =& new contentLogin($this);
+					$this->Page = new contentLogin($this);
 					$this->Page->build();
 				
 				}
@@ -89,7 +93,7 @@
 		public function getPageCallback($page=NULL, $update=false){
 			
 			if((!$page || !$update) && $this->_callback) return $this->_callback;
-			elseif(!$page && !$this->_callback) trigger_error('Cannot request a page callback without first specifying the page.');
+			elseif(!$page && !$this->_callback) trigger_error(__('Cannot request a page callback without first specifying the page.'));
 			
 			$this->_currentPage = URL . preg_replace('/\/{2,}/', '/', '/symphony' . $page);
 			$bits = preg_split('/\//', trim($page, '/'), 3, PREG_SPLIT_NO_EMPTY);
@@ -203,7 +207,7 @@
 			# Delegate: AdminPagePreGenerate
 			# Description: Immediately before generating the admin page. Provided with the page object
 			# Global: Yes
-			$this->ExtensionManager->notifyMembers('AdminPagePreGenerate', '/administration/', array('oPage' => &$this->Page));
+			$this->ExtensionManager->notifyMembers('AdminPagePreGenerate', '/backend/', array('oPage' => &$this->Page));
 			
 			$output = $this->Page->generate();
 
@@ -211,7 +215,7 @@
 			# Delegate: AdminPagePostGenerate
 			# Description: Immediately after generating the admin page. Provided with string containing page source
 			# Global: Yes
-			$this->ExtensionManager->notifyMembers('AdminPagePostGenerate', '/administration/', array('output' => &$output));
+			$this->ExtensionManager->notifyMembers('AdminPagePostGenerate', '/backend/', array('output' => &$output));
 
 			$this->Profiler->sample('Page built');
 			

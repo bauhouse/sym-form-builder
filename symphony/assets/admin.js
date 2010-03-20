@@ -2,24 +2,57 @@ var Symphony;
 
 (function($) {
 	Symphony = {
-		WEBSITE: $('script')[0].src.split('/symphony/')[0],
+		WEBSITE: $('script[src]')[0].src.match('(.*)/symphony')[1],
 		Language: {
-			UNTITLED:         "Untitled",
-			CREATE_ITEM:      "Add item",
-			REMOVE_ITEMS:     "Remove selected items",
-			CONFIRM_SINGLE:   "Are you sure you want to {$action} {$name}?",
-			CONFIRM_MANY:     "Are you sure you want to {$action} {$count} items?",
-			CONFIRM_ABSTRACT: "Are you sure you want to {$action}?",
-			REORDER_ERROR:    "Reordering was unsuccessful.",
-			PASSWORD:         "Password",
-			CHANGE_PASSWORD:  "Change Password",
-			REMOVE_FILE:      "Remove File",
-			TIME_SEPARATOR:   "at",
-			TIME_NOW:         "just now",
-			TIME_MINUTE:      "a minute ago",
-			TIME_MINUTES:     "{$minutes} minutes ago",
-			TIME_HOUR:        "about 1 hour ago",
-			TIME_HOURS:       "about {$hours} hours ago"
+			NAME: $('html').attr('lang'),
+			DICTIONARY: {},
+			get: function(string, tokens) {
+				// Get translated string
+				translatedString = Symphony.Language.DICTIONARY[string];
+
+				// Return string if it cannot be found in the dictionary
+				if(translatedString !== false) string = translatedString;
+					
+				// Insert tokens
+				if(tokens !== undefined) string = Symphony.Language.insert(string, tokens);
+				
+				// Return translated string
+				return string;
+			},
+			insert: function(string, tokens) {
+				// Replace tokens
+				$.each(tokens, function(index, value) { 
+					string = string.replace('{$' + index + '}', value);
+				});
+				return string;
+			},
+			add: function(strings) {
+				// Set key as value
+				$.each(strings, function(key, value) {
+					strings[key] = key;
+				});
+				// Save English strings
+				if(Symphony.Language.NAME == 'en') {
+					Symphony.Language.DICTIONARY = $.extend(Symphony.Language.DICTIONARY, strings);
+				}
+				// Translate strings
+				else {
+					Symphony.Language.translate(strings);
+				}
+			},
+			translate: function(strings) {
+				// Load translations synchronous
+				$.ajax({
+					async: false,
+					type: 'GET',
+					url: Symphony.WEBSITE + '/symphony/ajax/translate',
+					data: strings,
+					dataType: 'json',
+					success: function(result) {
+						Symphony.Language.DICTIONARY = $.extend(Symphony.Language.DICTIONARY, result);
+					}
+				});
+			}
 		},
 		Message: {
 			post: function(message, type) {
@@ -56,16 +89,50 @@ var Symphony;
   			distance: function(from, to) {
   				var distance = to - from;
 				var time = Math.floor(distance / 60000);
-				if (time < 1) { return Symphony.Language.TIME_NOW; }
-				if (time < 2) { return Symphony.Language.TIME_MINUTE; }
-				if (time < 45) { return Symphony.Language.TIME_MINUTES.replace('{$minutes}', time); }
-				if (time < 90) { return Symphony.Language.TIME_HOUR; }
-				else { return Symphony.Language.TIME_MINUTES.replace('{$hours}', time); }
+				if (time < 1) { 
+					return Symphony.Language.get('just now'); 
+				}
+				if (time < 2) { 
+					return Symphony.Language.get('a minute ago'); 
+				}
+				if (time < 45) { 
+					return Symphony.Language.get('{$minutes} minutes ago', {
+						'minutes': time
+					}); 
+				}
+				if (time < 90) { 
+					return Symphony.Language.get('about 1 hour ago'); 
+				}
+				else { 
+					return Symphony.Language.get('about {$hours} hours ago', {
+						'hours': Math.floor(time / 60)
+					}); 
+				}
 			},
 			queue: []
 		}
 	};
 
+	// Add language strings
+	Symphony.Language.add({
+		'Add item': false,
+		'Remove selected items': false,
+		'Are you sure you want to {$action} {$name}?': false,
+		'Are you sure you want to {$action} {$count} items?': false,
+		'Are you sure you want to {$action}?': false,
+		'Reordering was unsuccessful.': false,
+		'Password': false,
+		'Change Password': false,
+		'Remove File': false,
+		'at': false,
+		'just now': false,
+		'a minute ago': false,
+		'{$minutes} minutes ago': false,
+		'about 1 hour ago': false,
+		'about {$hours} hours ago': false
+	});
+
+	// Set JavaScript status
 	$(document.documentElement).addClass('active');
 
 	// Sortable lists
@@ -116,10 +183,11 @@ var Symphony;
 		},
 		update: function(target) {
 			var a = target.height(),
-			    b = target.offset().top;
-
+			    b = target.offset().top,
+				prev_offset = (target.prev().length) ? target.prev().offset().top : 0;
+			
 			movable.target = target;
-			movable.min    = Math.min(b, a + (target.prev().offset().top || -Infinity));
+			movable.min    = Math.min(b, a + (prev_offset || -Infinity));
 			movable.max    = Math.max(a + b, b + (target.next().height() ||  Infinity));
 		}
 	};
@@ -149,7 +217,7 @@ var Symphony;
 				if (x.status === 200) {
 					Symphony.Message.clear('reorder');
 				} else {
-					Symphony.Message.post(Symphony.Language.REORDER_ERROR, 'reorder error');
+					Symphony.Message.post(Symphony.Language.get('Reordering was unsuccessful.'), 'reorder error');
 				}
 				t.removeClass('busy');
 			}
@@ -165,7 +233,27 @@ var Symphony;
 
 		r.trigger($.Event(r.hasClass('selected') ? 'select' : 'deselect'));
 		r.find('td input').each(function() { this.checked = !this.checked; });
-
+		
+		// when shift held when selecting a row
+		if (e.shiftKey && r.hasClass('selected')) {
+			
+			// find first selected row above newly-selected row
+			var selected_above = r.prevAll('.selected');
+			if (selected_above.length) {
+				var from = $('.selectable tr').index(selected_above);
+				var to = $('.selectable tr').index(r);				
+				$('.selectable tr').each(function(i) {
+					if (i > from && i < to) {
+						var r = $(this).toggleClass('selected');
+						r.trigger($.Event(r.hasClass('selected') ? 'select' : 'deselect'));
+						r.find('td input').each(function() { this.checked = !this.checked; });
+					}
+				});
+			}
+			// de-select text caused by holding shift
+			if (window.getSelection) window.getSelection().removeAllRanges();
+		}
+		
 		return false;
 	});
 
@@ -239,7 +327,7 @@ var Symphony;
 				return;
 			}
 
-			a.before('<div class="label">' + Symphony.Language.PASSWORD + ' <span><button id="change-password" type="button">' + Symphony.Language.CHANGE_PASSWORD + '</button></span></div>').remove();
+			a.before('<div class="label">' + Symphony.Language.get('Password') + ' <span><button id="change-password" type="button">' + Symphony.Language.get('Change Password') + '</button></span></div>').remove();
 
 			$('#change-password').click(function() {
 				$(this.parentNode.parentNode).replaceWith(b);
@@ -248,7 +336,7 @@ var Symphony;
 		});
 
 		// Upload fields
-		$('<em>' + Symphony.Language.REMOVE_FILE + '</em>').appendTo('label.file:has(a) span').click(function() {
+		$('<em>' + Symphony.Language.get('Remove File') + '</em>').appendTo('label.file:has(a) span').click(function() {
 			var s = $(this.parentNode),
 			    d = '<input name="' + $(this).siblings('input').attr('name') + '" type="file">';
 
@@ -258,21 +346,26 @@ var Symphony;
 		// confirm() dialogs
 		$('button.confirm').live('click', function() {
 			var n = document.title.split(/[\u2013]\s*/g)[2],
-			    t = Symphony.Language[n ? 'CONFIRM_SINGLE' : 'CONFIRM_ABSTRACT'];
+			    t = (n ? 'Are you sure you want to {$action} {$name}?' : 'Are you sure you want to {$action}?');
 
-			return confirm(t.replace('{$action}', this.firstChild.data.toLowerCase()).replace('{$name}', n));
+			return confirm(Symphony.Language.get(t, { 
+				'action': this.firstChild.data.toLowerCase(),
+				'name': n
+			}));
 		});
 
 		if ($('[name=with-selected] option.confirm').length > 0) {
 			$('form').submit(function() {
 				var i = $('table input:checked').length,
-				    t = Symphony.Language[i > 1 ? 'CONFIRM_MANY' : 'CONFIRM_SINGLE'],
+				    t = (i > 1 ? 'Are you sure you want to {$action} {$count} items?' : 'Are you sure you want to {$action} {$name}?'),
 				    s = document.getElementsByName('with-selected')[0],
 				    o = $(s.options[s.selectedIndex]);
 
-				t = t.replace('{$action}', o.text().toLowerCase())
-				     .replace('{$name}'  , $('table input:checked').parents('tr').find('td').eq(0).text())
-				     .replace('{$count}' , i);
+				t = Symphony.Language.get(t, {
+					'action': o.text().toLowerCase(),
+					'name': $('table input:checked').parents('tr').find('td').eq(0).text(),
+					'count': i
+				});
 
 				return i > 0 && !o.hasClass('confirm') || confirm(t);
 			});
@@ -289,7 +382,11 @@ var Symphony;
 		});
 
 		$('textarea').blur();
-
+		
+		// Internal duplicators:
+		$('#fields-duplicator').symphonyDuplicator({ orderable: true });
+		$('.filters-duplicator').symphonyDuplicator();
+		
 		// Repeating sections
 		$('div.subsection').each(function() {
 			var m = $(this),
@@ -297,7 +394,7 @@ var Symphony;
 			    h = t.map(function() { return $(this).height(); }).get();
 
 			t.remove().css('height', 0);
-			m.append('<div class="actions"><a>' + Symphony.Language.CREATE_ITEM + '</a><a class="inactive">' + Symphony.Language.REMOVE_ITEMS + '</a></div>')
+			m.append('<div class="actions"><a>' + Symphony.Language.get('Add item') + '</a><a class="inactive">' + Symphony.Language.get('Remove selected items') + '</a></div>')
 			m.bind('select', select).bind('deselect', select);
 
 			var r = m.find('.actions > a.inactive'),
@@ -384,7 +481,7 @@ var Symphony;
 		window.setTimeout("Symphony.Message.fade()", 10000);
 		$('abbr.timeago').each(function() {
 			var html = $(this).parent().html();
-			$(this).parent().html(html.replace(Symphony.Language.TIME_SEPARATOR + ' ', ''));
+			$(this).parent().html(html.replace(Symphony.Language.get('at') + ' ', ''));
 		});
 		Symphony.Message.timer();
 	});

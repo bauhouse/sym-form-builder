@@ -1,5 +1,7 @@
+._*
 .Apple*
 .DS_Store
 *config.php
 .htaccess
 manifest
+*.esproj

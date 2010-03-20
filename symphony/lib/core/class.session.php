@@ -20,15 +20,19 @@
 				if(!is_object(Symphony::Database()) || !Symphony::Database()->isConnected()) return false;
 
 				self::$_cache = new Cacheable(Symphony::Database());
-				$installed = self::$_cache->check('_session_config');
-				if (!$installed) {
-					if (!self::createTable()) return false;
+
+				if (self::$_cache->check('_session_config') === false) {
+					self::createTable();
 					self::$_cache->write('_session_config', true);
 				}
 
-				ini_set('session.save_handler', 'user');
-				ini_set('session.gc_maxlifetime', $lifetime);
-				
+				if (!session_id()) {
+					ini_set('session.save_handler', 'user');
+					ini_set('session.gc_maxlifetime', $lifetime);
+					ini_set('session.gc_probability', '1');
+					ini_set('session.gc_divisor', '3');
+				}
+
 				session_set_save_handler(
 					array('Session', 'open'),
 					array('Session', 'close'),
@@ -54,7 +58,7 @@
 		}
 
 		public static function createTable() {
-			return Symphony::Database()->query(
+			Symphony::Database()->query(
 				"CREATE TABLE IF NOT EXISTS `tbl_sessions` (
 				  `session` varchar(255) NOT NULL,
 				  `session_expires` int(10) unsigned NOT NULL default '0',
@@ -75,6 +79,8 @@
 				$parsed = parse_url(
 					preg_replace('/^www./i', NULL, $_SERVER['HTTP_HOST'])
 				);
+				
+				if (!isset($parsed['host'])) return NULL;
 				
 				$domain = $parsed['host'];
 				
@@ -131,6 +137,7 @@
 		}
 
 		public static function gc($max) {
+			Symphony::$Log->pushToLog("Session: Taking out the trash!", E_NOTICE, true);
 			return Symphony::Database()->query(
 				sprintf(
 					"DELETE FROM `tbl_sessions` WHERE `session_expires` <= '%s'",
