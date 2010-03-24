@@ -224,12 +224,12 @@ CREATE TABLE `tbl_entries_data_10` (
   PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `relation_id` (`relation_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** DATA: `tbl_entries_data_10` ***
 INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `relation_id`) VALUES (3, 13, 1);
-INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `relation_id`) VALUES (4, 8, 5);
-INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `relation_id`) VALUES (5, 8, 1);
+INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `relation_id`) VALUES (9, 8, 5);
+INSERT INTO `tbl_entries_data_10` (`id`, `entry_id`, `relation_id`) VALUES (8, 8, 1);
 
 -- *** STRUCTURE: `tbl_entries_data_11` ***
 DROP TABLE IF EXISTS `tbl_entries_data_11`;
@@ -961,15 +961,15 @@ CREATE TABLE `tbl_entries_data_5` (
   KEY `entry_id` (`entry_id`),
   KEY `handle` (`handle`),
   KEY `value` (`value`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** DATA: `tbl_entries_data_5` ***
 INSERT INTO `tbl_entries_data_5` (`id`, `entry_id`, `handle`, `value`) VALUES (7, 7, 'symphony-cms-xslt-templates', 'Symphony CMS XSLT Templates');
-INSERT INTO `tbl_entries_data_5` (`id`, `entry_id`, `handle`, `value`) VALUES (15, 8, 'bugaroo-bug-tracker-ensemble', 'Bugaroo Bug Tracker Ensemble');
+INSERT INTO `tbl_entries_data_5` (`id`, `entry_id`, `handle`, `value`) VALUES (18, 8, 'bugaroo-bug-tracker-ensemble', 'Bugaroo Bug Tracker Ensemble');
 INSERT INTO `tbl_entries_data_5` (`id`, `entry_id`, `handle`, `value`) VALUES (4, 9, 'try-saving-another-project', 'Try saving another project');
 INSERT INTO `tbl_entries_data_5` (`id`, `entry_id`, `handle`, `value`) VALUES (8, 10, 'testing-the-form-when-saving-multiple-contributors', 'Testing the form when saving multiple contributors');
 INSERT INTO `tbl_entries_data_5` (`id`, `entry_id`, `handle`, `value`) VALUES (14, 13, 'the-symphony-form-builder', 'The Symphony Form Builder');
-INSERT INTO `tbl_entries_data_5` (`id`, `entry_id`, `handle`, `value`) VALUES (11, 15, 'testing-out-the-eventex-extension', 'Testing Out the EventEx Extension');
+INSERT INTO `tbl_entries_data_5` (`id`, `entry_id`, `handle`, `value`) VALUES (19, 15, 'testing-out-the-eventex-extension', 'Testing Out the EventEx Extension');
 
 -- *** STRUCTURE: `tbl_entries_data_50` ***
 DROP TABLE IF EXISTS `tbl_entries_data_50`;
@@ -998,15 +998,15 @@ CREATE TABLE `tbl_entries_data_6` (
   PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   FULLTEXT KEY `value` (`value`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** DATA: `tbl_entries_data_6` ***
 INSERT INTO `tbl_entries_data_6` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (7, 7, 'Rebuilding the Symphony CMS Admin interface entirely with XSLT', 'Rebuilding the Symphony CMS Admin interface entirely with XSLT');
-INSERT INTO `tbl_entries_data_6` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (15, 8, 'Building a Symphony ensemble to track projects and issues', '<p>Building a Symphony ensemble to track projects and issues</p>\n');
+INSERT INTO `tbl_entries_data_6` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (18, 8, 'Building a Symphony ensemble to track projects and issues', '<p>Building a Symphony ensemble to track projects and issues</p>\n');
 INSERT INTO `tbl_entries_data_6` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (4, 9, 'The project description', 'The project description');
 INSERT INTO `tbl_entries_data_6` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (8, 10, 'A test of the Form Controls for saving multiple select box values', 'A test of the Form Controls for saving multiple select box values');
 INSERT INTO `tbl_entries_data_6` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (14, 13, 'An ensemble to demonstrate using Section Schemas and Form Controls to build front end forms in Symphony', '<p>An ensemble to demonstrate using Section Schemas and Form Controls to build front end forms in Symphony</p>\n');
-INSERT INTO `tbl_entries_data_6` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (11, 15, 'Creating entries in two sections with a single action using the EventEx extension. I was encountering a fatal error when using the latest version of the ASDC extension. I needed to grab an earlier version in order to get this working.', 'Creating entries in two sections with a single action using the EventEx extension. I was encountering a fatal error when using the latest version of the ASDC extension. I needed to grab an earlier version in order to get this working.');
+INSERT INTO `tbl_entries_data_6` (`id`, `entry_id`, `value`, `value_formatted`) VALUES (19, 15, 'Creating entries in two sections with a single action using the EventEx extension. I was encountering a fatal error when using the latest version of the ASDC extension. I needed to grab an earlier version in order to get this working.', '<p>Creating entries in two sections with a single action using the EventEx extension. I was encountering a fatal error when using the latest version of the ASDC extension. I needed to grab an earlier version in order to get this working.</p>\n');
 
 -- *** STRUCTURE: `tbl_entries_data_7` ***
 DROP TABLE IF EXISTS `tbl_entries_data_7`;
@@ -1019,15 +1019,15 @@ CREATE TABLE `tbl_entries_data_7` (
   KEY `entry_id` (`entry_id`),
   KEY `handle` (`handle`),
   KEY `value` (`value`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** DATA: `tbl_entries_data_7` ***
 INSERT INTO `tbl_entries_data_7` (`id`, `entry_id`, `handle`, `value`) VALUES (7, 7, 'active', 'Active');
-INSERT INTO `tbl_entries_data_7` (`id`, `entry_id`, `handle`, `value`) VALUES (15, 8, 'active', 'Active');
+INSERT INTO `tbl_entries_data_7` (`id`, `entry_id`, `handle`, `value`) VALUES (18, 8, 'active', 'Active');
 INSERT INTO `tbl_entries_data_7` (`id`, `entry_id`, `handle`, `value`) VALUES (4, 9, 'finished', 'Finished');
 INSERT INTO `tbl_entries_data_7` (`id`, `entry_id`, `handle`, `value`) VALUES (8, 10, 'active', 'Active');
 INSERT INTO `tbl_entries_data_7` (`id`, `entry_id`, `handle`, `value`) VALUES (14, 13, 'active', 'Active');
-INSERT INTO `tbl_entries_data_7` (`id`, `entry_id`, `handle`, `value`) VALUES (11, 15, 'inactive', 'Inactive');
+INSERT INTO `tbl_entries_data_7` (`id`, `entry_id`, `handle`, `value`) VALUES (19, 15, 'inactive', 'Inactive');
 
 -- *** STRUCTURE: `tbl_entries_data_8` ***
 DROP TABLE IF EXISTS `tbl_entries_data_8`;
@@ -1038,12 +1038,12 @@ CREATE TABLE `tbl_entries_data_8` (
   PRIMARY KEY (`id`),
   KEY `entry_id` (`entry_id`),
   KEY `relation_id` (`relation_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** DATA: `tbl_entries_data_8` ***
 INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (11, 7, 1);
-INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (32, 8, 1);
-INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (31, 8, 2);
+INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (38, 8, 2);
+INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (37, 8, 1);
 INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (5, 9, 2);
 INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (6, 9, 1);
 INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (15, 10, 2);
@@ -1052,8 +1052,8 @@ INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (13, 1
 INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (12, 10, 5);
 INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (30, 13, 1);
 INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (29, 13, 3);
-INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (18, 15, 6);
-INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (19, 15, 4);
+INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (40, 15, 6);
+INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (39, 15, 4);
 INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (28, 13, 4);
 INSERT INTO `tbl_entries_data_8` (`id`, `entry_id`, `relation_id`) VALUES (27, 13, 5);
 
