@@ -30,7 +30,7 @@
 	url = git://github.com/nickdunn/eventex.git
 [submodule "extensions/section_schemas"]
 	path = extensions/section_schemas
-	url = git://github.com/bauhouse/section_schemas.git
+	url = git://github.com/nickdunn/section_schemas.git
 [submodule "extensions/color_chooser_field"]
 	path = extensions/color_chooser_field
 	url = git://github.com/MrBlank/symphony_color_chooser.git
