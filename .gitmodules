@@ -27,7 +27,7 @@
 	url = git://github.com/yourheropaul/databasemanipulator.git
 [submodule "extensions/eventex"]
 	path = extensions/eventex
-	url = git://github.com/yourheropaul/eventex.git
+	url = git://github.com/nickdunn/eventex.git
 [submodule "extensions/section_schemas"]
 	path = extensions/section_schemas
 	url = git://github.com/bauhouse/section_schemas.git
