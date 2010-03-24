@@ -96,7 +96,7 @@
 					<xsl:call-template name="form:select">
 						<xsl:with-param name="handle" select="name()"/>
 						<xsl:with-param name="allow-multiple" select="allow-multiple-selection"/>
-						<xsl:with-param name="options" select="options/*"/>
+						<xsl:with-param name="options" select="options//option"/>
 						<xsl:with-param name="value" select="$field-value"/>
 					</xsl:call-template>
 				</xsl:with-param>
