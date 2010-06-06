@@ -5,9 +5,8 @@
 	xmlns:form="http://nick-dunn.co.uk/xslt/form-controls"
 	extension-element-prefixes="exsl form">
 
-<xsl:import href="../utilities/form-master.xsl"/>
-<xsl:import href="../utilities/form-controls.xsl"/>
-<xsl:import href="../utilities/section-schema.xsl"/>
+<xsl:import href="form-master.xsl"/>
+<xsl:import href="section-schema.xsl"/>
 
 <!-- A global variable pointing to your event is defined based on the event action -->
 <xsl:variable name="form:event" select="/data/events/*[name()=$event-action]"/>
