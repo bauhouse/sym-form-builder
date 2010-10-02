@@ -2,7 +2,7 @@
 
 	Class General{
 		
-		const CRLF = "\r\n";
+		const CRLF = PHP_EOL;
 		
 		/***
 		
@@ -320,23 +320,8 @@
 		        }
 		    }
 		    return $input;
-		}
+		}		
 		
-		
-		/***
-		
-		Method: repeatStr
-		Description: This will repeat a string XX number of times.
-		Param: $str - string to repeat
-		       $xx - Number of times to repeat the string
-		Return: resultant string
-		
-		***/		
-		public static function repeatStr($str, $xx){
-			$xx = ceil(max(0, $xx));
-			return ($xx == 0 ? NULL : str_pad('', strlen($str) * $xx, $str));
-		}
-
 		/***
 		
 		Method: substrmin
@@ -970,10 +955,17 @@
 			$pageinfo->setAttribute('total-entries', $total_entries);
 			$pageinfo->setAttribute('total-pages', $total_pages);
 			$pageinfo->setAttribute('entries-per-page', $entries_per_page);
-			$pageinfo->setAttribute('current-page', $current_page);						
+			$pageinfo->setAttribute('current-page', $current_page);
 
 			return $pageinfo;
 				
+		}
+		
+		// Uses SHA1 or MD5 to create a hash based on some input
+		// This function is currently very basic, but would allow
+		// future expansion. Salting the hash comes to mind.
+		public static function hash($input, $algorithm='sha1'){
+			return call_user_func($algorithm, $input);
 		}
 		
 	}

@@ -14,6 +14,14 @@
 	## If its not an update, we need to set a couple of important constants.
 	define('__IN_SYMPHONY__', true);
 	define('DOCROOT', './');
+
+	$rewrite_base = trim(dirname($_SERVER['PHP_SELF']), '/\\'); 
+
+	if(strlen($rewrite_base) > 0){
+		$rewrite_base .= '/';
+	}
+
+	define('REWRITE_BASE', $rewrite_base);
 	
 	require_once(DOCROOT . '/symphony/lib/boot/func.utilities.php');
 	require_once(DOCROOT . '/symphony/lib/boot/defines.php');
@@ -122,7 +130,7 @@
 		}
 		$string .= "\r\n\t);\n\n";
 
-        return GeneralExtended::writeFile($dest . '/config.php', $string, $mode);
+        return General::writeFile($dest . '/config.php', $string, $mode);
 
     }
 
@@ -152,6 +160,50 @@
         }
 		
         return true;
+
+    }
+
+
+    function checkRequirement($item, $type, $expected){
+
+ 		switch($type){
+
+		    case 'func':
+
+		        $test = function_exists($item);
+		        if($test != $expected) return false;
+		        break;
+
+		    case 'setting':
+		        $test = ini_get($item);
+		        if(strtolower($test) != strtolower($expected)) return false;
+		        break;
+
+		    case 'ext':
+		        foreach(explode(':', $item) as $ext){
+		            $test = extension_loaded($ext);         
+		            if($test == $expected) return true;
+		        }
+
+				return false;
+		        break;
+
+		     case 'version':    
+		        if(version_compare($item, $expected, '>=') != 1) return false;
+		        break;       
+
+		     case 'permission':
+		        if(!is_writable($item)) return false;
+		        break;
+
+		     case 'remote':
+		        $result = curler($item);
+		        if(strpos(strtolower($result), 'error') !== false) return false;   
+		        break;
+
+		}
+
+		return true;
 
     }
 
@@ -257,74 +309,6 @@
 		}
 	}
 
-	Class GeneralExtended extends General{
-		
-        public static function realiseDirectory($path, $mode){
-
-            if(!empty($path)){
-                
-                if(@file_exists($path) && !@is_dir($path)){
-                    return false;
-                    
-                }elseif(!@is_dir($path)){
-
-			        @mkdir($path);
-       
-			        $oldmask = @umask(0);
-			        @chmod($path, @intval($mode, 8));
-			        @umask($oldmask);
-        				    
-				}             
-            }
-                
-            return true;
-            
-        }
-
-	    public static function checkRequirement($item, $type, $expected){
-
-	 		switch($type){
-
-			    case 'func':
-
-			        $test = function_exists($item);
-			        if($test != $expected) return false;
-			        break;
-
-			    case 'setting':
-			        $test = ini_get($item);
-			        if(strtolower($test) != strtolower($expected)) return false;
-			        break;
-
-			    case 'ext':
-			        foreach(explode(':', $item) as $ext){
-			            $test = extension_loaded($ext);         
-			            if($test == $expected) return true;
-			        }
-
-					return false;
-			        break;
-
-			     case 'version':    
-			        if(version_compare($item, $expected, '>=') != 1) return false;
-			        break;       
-
-			     case 'permission':
-			        if(!is_writable($item)) return false;
-			        break;
-
-			     case 'remote':
-			        $result = curler($item);
-			        if(strpos(strtolower($result), 'error') !== false) return false;   
-			        break;
-
-			}
-
-			return true;
-
-	    }	
-		
-	}
 
     Class SymphonyLog extends Log{
         
@@ -351,27 +335,27 @@
 
 			$missing = array();
 
-			if(!GeneralExtended::checkRequirement(phpversion(), 'version', '5.2')){
+			if(!checkRequirement(phpversion(), 'version', '5.2')){
 				$Page->log->pushToLog('Requirement - PHP Version is not correct. '.phpversion().' detected.' , E_ERROR, true);
 				$missing[] = MISSING_PHP;	
 			}		
 
-			if(!GeneralExtended::checkRequirement('mysql_connect', 'func', true)){
+			if(!checkRequirement('mysql_connect', 'func', true)){
 				$Page->log->pushToLog('Requirement - MySQL extension not present' , E_ERROR, true);
 				$missing[] = MISSING_MYSQL;
 			}
 			
-			if(!GeneralExtended::checkRequirement('zlib', 'ext', true)){
+			if(!checkRequirement('zlib', 'ext', true)){
 				$Page->log->pushToLog('Requirement - ZLib extension not present' , E_ERROR, true);
 				$missing[] = MISSING_ZLIB;
 			}
 
-			if(!GeneralExtended::checkRequirement('xml:libxml', 'ext', true)){
+			if(!checkRequirement('xml:libxml', 'ext', true)){
 				$Page->log->pushToLog('Requirement - No XML extension present' , E_ERROR, true);
 				$missing[] = MISSING_XML;
 			}
 
-			if(!GeneralExtended::checkRequirement('xsl:xslt', 'ext', true) && !GeneralExtended::checkRequirement('domxml_xslt_stylesheet', 'func', true))	{
+			if(!checkRequirement('xsl:xslt', 'ext', true) && !checkRequirement('domxml_xslt_stylesheet', 'func', true))	{
 				$Page->log->pushToLog('Requirement - No XSL extension present' , E_ERROR, true);
 				$missing[] = MISSING_XSL;
 			}
@@ -578,7 +562,7 @@
 					VALUES (
 						1,
 						'%s',
-						MD5('%s'),
+						%s('%s'),
 						'%s',  
 						'%s',  
 						'%s', 
@@ -590,6 +574,7 @@
 					);", 
 					
 					$db->cleanValue($config['user']['username']), 
+					'SHA1',
 					$db->cleanValue($config['user']['password']), 
 					$db->cleanValue($config['user']['firstname']), 
 					$db->cleanValue($config['user']['lastname']), 
@@ -656,7 +641,7 @@
 				#
 
 		        $install_log->pushToLog("WRITING: Creating 'manifest' folder (/manifest)", E_NOTICE, true, true);
-		        if(!GeneralExtended::realiseDirectory($kDOCROOT . '/manifest', $conf['settings']['directory']['write_mode'])){
+		        if(!General::realiseDirectory($kDOCROOT . '/manifest', $conf['settings']['directory']['write_mode'])){
 		            define('_INSTALL_ERRORS_', "Could not create 'manifest' directory. Check permission on the root folder.");       
 		            $install_log->pushToLog("ERROR: Creation of 'manifest' folder failed.", E_ERROR, true, true);                         
 		            installResult($Page, $install_log, $start);
@@ -664,7 +649,7 @@
 		        }
 
 		        $install_log->pushToLog("WRITING: Creating 'logs' folder (/manifest/logs)", E_NOTICE, true, true);
-		        if(!GeneralExtended::realiseDirectory($kDOCROOT . '/manifest/logs', $conf['settings']['directory']['write_mode'])){
+		        if(!General::realiseDirectory($kDOCROOT . '/manifest/logs', $conf['settings']['directory']['write_mode'])){
 		            define('_INSTALL_ERRORS_', "Could not create 'logs' directory. Check permission on /manifest.");       
 		            $install_log->pushToLog("ERROR: Creation of 'logs' folder failed.", E_ERROR, true, true);                         
 		            installResult($Page, $install_log, $start);
@@ -672,7 +657,7 @@
 		        }
 
 		        $install_log->pushToLog("WRITING: Creating 'cache' folder (/manifest/cache)", E_NOTICE, true, true);
-		        if(!GeneralExtended::realiseDirectory($kDOCROOT . '/manifest/cache', $conf['settings']['directory']['write_mode'])){
+		        if(!General::realiseDirectory($kDOCROOT . '/manifest/cache', $conf['settings']['directory']['write_mode'])){
 		            define('_INSTALL_ERRORS_', "Could not create 'cache' directory. Check permission on /manifest.");       
 		            $install_log->pushToLog("ERROR: Creation of 'cache' folder failed.", E_ERROR, true, true);                         
 		            installResult($Page, $install_log, $start);
@@ -680,7 +665,7 @@
 		        }
 
 		        $install_log->pushToLog("WRITING: Creating 'tmp' folder (/manifest/tmp)", E_NOTICE, true, true);
-		        if(!GeneralExtended::realiseDirectory($kDOCROOT . '/manifest/tmp', $conf['settings']['directory']['write_mode'])){
+		        if(!General::realiseDirectory($kDOCROOT . '/manifest/tmp', $conf['settings']['directory']['write_mode'])){
 		            define('_INSTALL_ERRORS_', "Could not create 'tmp' directory. Check permission on /manifest.");       
 		            $install_log->pushToLog("ERROR: Creation of 'tmp' folder failed.", E_ERROR, true, true);                         
 		            installResult($Page, $install_log, $start);
@@ -694,20 +679,14 @@
 		            installResult($Page, $install_log, $start);
 		        }
 
-		        $rewrite_base = trim(dirname($_SERVER['PHP_SELF']), '/'); 
-
-		        if(strlen($rewrite_base) > 0){
-					$rewrite_base .= '/';
-				}
-
 		        $htaccess = '
 ### Symphony 2.0.x ###
-Options +FollowSymlinks
+Options +FollowSymlinks -Indexes
 
 <IfModule mod_rewrite.c>
 
 	RewriteEngine on
-	RewriteBase /'.$rewrite_base.'
+	RewriteBase /'.REWRITE_BASE.'
 
 	### DO NOT APPLY RULES WHEN REQUESTING "favicon.ico"
 	RewriteCond %{REQUEST_FILENAME} favicon.ico [NC]
@@ -739,7 +718,7 @@ Options +FollowSymlinks
 ';
 
 		        $install_log->pushToLog("CONFIGURING: Frontend", E_NOTICE, true, true);
-		        if(!GeneralExtended::writeFile($kDOCROOT . "/.htaccess", $htaccess, $conf['settings']['file']['write_mode'])){
+		        if(!General::writeFile($kDOCROOT . "/.htaccess", $htaccess, $conf['settings']['file']['write_mode'])){
 		            define('_INSTALL_ERRORS_', "Could not write .htaccess file. Check permission on " . $kDOCROOT);       
 		            $install_log->pushToLog("ERROR: Writing .htaccess File Failed", E_ERROR, true, true);                          
 		            installResult($Page, $install_log, $start);
@@ -751,7 +730,7 @@ Options +FollowSymlinks
 					#
 					
 			        $install_log->pushToLog("WRITING: Creating 'workspace' folder (/workspace)", E_NOTICE, true, true);
-			        if(!GeneralExtended::realiseDirectory($kDOCROOT . '/workspace', $conf['settings']['directory']['write_mode'])){
+			        if(!General::realiseDirectory($kDOCROOT . '/workspace', $conf['settings']['directory']['write_mode'])){
 			            define('_INSTALL_ERRORS_', "Could not create 'workspace' directory. Check permission on the root folder.");       
 			            $install_log->pushToLog("ERROR: Creation of 'workspace' folder failed.", E_ERROR, true, true);                         
 			            installResult($Page, $install_log, $start);
@@ -759,7 +738,7 @@ Options +FollowSymlinks
 			        }
 
 			        $install_log->pushToLog("WRITING: Creating 'data-sources' folder (/workspace/data-sources)", E_NOTICE, true, true);
-			        if(!GeneralExtended::realiseDirectory($kDOCROOT . '/workspace/data-sources', $conf['settings']['directory']['write_mode'])){
+			        if(!General::realiseDirectory($kDOCROOT . '/workspace/data-sources', $conf['settings']['directory']['write_mode'])){
 			            define('_INSTALL_ERRORS_', "Could not create 'workspace/data-sources' directory. Check permission on the root folder.");       
 			            $install_log->pushToLog("ERROR: Creation of 'workspace/data-sources' folder failed.", E_ERROR, true, true);                         
 			            installResult($Page, $install_log, $start);
@@ -767,7 +746,7 @@ Options +FollowSymlinks
 			        }
 
 			        $install_log->pushToLog("WRITING: Creating 'events' folder (/workspace/events)", E_NOTICE, true, true);
-			        if(!GeneralExtended::realiseDirectory($kDOCROOT . '/workspace/events', $conf['settings']['directory']['write_mode'])){
+			        if(!General::realiseDirectory($kDOCROOT . '/workspace/events', $conf['settings']['directory']['write_mode'])){
 			            define('_INSTALL_ERRORS_', "Could not create 'workspace/events' directory. Check permission on the root folder.");       
 			            $install_log->pushToLog("ERROR: Creation of 'workspace/events' folder failed.", E_ERROR, true, true);                         
 			            installResult($Page, $install_log, $start);
@@ -775,7 +754,7 @@ Options +FollowSymlinks
 			        }
 
 			        $install_log->pushToLog("WRITING: Creating 'pages' folder (/workspace/pages)", E_NOTICE, true, true);
-			        if(!GeneralExtended::realiseDirectory($kDOCROOT . '/workspace/pages', $conf['settings']['directory']['write_mode'])){
+			        if(!General::realiseDirectory($kDOCROOT . '/workspace/pages', $conf['settings']['directory']['write_mode'])){
 			            define('_INSTALL_ERRORS_', "Could not create 'workspace/pages' directory. Check permission on the root folder.");       
 			            $install_log->pushToLog("ERROR: Creation of 'workspace/pages' folder failed.", E_ERROR, true, true);                         
 			            installResult($Page, $install_log, $start);
@@ -783,7 +762,7 @@ Options +FollowSymlinks
 			        }
 
 			        $install_log->pushToLog("WRITING: Creating 'utilities' folder (/workspace/utilities)", E_NOTICE, true, true);
-			        if(!GeneralExtended::realiseDirectory($kDOCROOT . '/workspace/utilities', $conf['settings']['directory']['write_mode'])){
+			        if(!General::realiseDirectory($kDOCROOT . '/workspace/utilities', $conf['settings']['directory']['write_mode'])){
 			            define('_INSTALL_ERRORS_', "Could not create 'workspace/utilities' directory. Check permission on the root folder.");       
 			            $install_log->pushToLog("ERROR: Creation of 'workspace/utilities' folder failed.", E_ERROR, true, true);                         
 			            installResult($Page, $install_log, $start);
@@ -808,7 +787,7 @@ Options +FollowSymlinks
 							
 				if(@!is_dir($fields['docroot'] . '/extensions')){
 			        $install_log->pushToLog("WRITING: Creating 'campfire' folder (/extensions)", E_NOTICE, true, true);
-			        if(!GeneralExtended::realiseDirectory($kDOCROOT . '/extensions', $conf['settings']['directory']['write_mode'])){
+			        if(!General::realiseDirectory($kDOCROOT . '/extensions', $conf['settings']['directory']['write_mode'])){
 			            define('_INSTALL_ERRORS_', "Could not create 'extensions' directory. Check permission on the root folder.");       
 			            $install_log->pushToLog("ERROR: Creation of 'extensions' folder failed.", E_ERROR, true, true);                         
 			            installResult($Page, $install_log, $start);
