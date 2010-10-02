@@ -68,7 +68,7 @@ DROP TABLE IF EXISTS `tbl_fields_input`;
 CREATE TABLE `tbl_fields_input` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `field_id` int(11) unsigned NOT NULL,
-  `validator` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `validator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -154,7 +154,7 @@ DROP TABLE IF EXISTS `tbl_fields_taglist`;
 CREATE TABLE `tbl_fields_taglist` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `field_id` int(11) unsigned NOT NULL,
-  `validator` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `validator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `pre_populate_source` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`),
@@ -175,9 +175,9 @@ CREATE TABLE `tbl_fields_textarea` (
 ) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** DATA: `tbl_fields_textarea` ***
-INSERT INTO `tbl_fields_textarea` (`id`, `field_id`, `formatter`, `size`) VALUES (5, 6, 'pb_markdownextrasmartypants', 15);
+INSERT INTO `tbl_fields_textarea` (`id`, `field_id`, `formatter`, `size`) VALUES (5, 6, 'markdown_extra_with_smartypants', 15);
 INSERT INTO `tbl_fields_textarea` (`id`, `field_id`, `formatter`, `size`) VALUES (12, 12, NULL, 15);
-INSERT INTO `tbl_fields_textarea` (`id`, `field_id`, `formatter`, `size`) VALUES (14, 27, 'pb_markdownextrasmartypants', 15);
+INSERT INTO `tbl_fields_textarea` (`id`, `field_id`, `formatter`, `size`) VALUES (14, 27, 'markdown_extra_with_smartypants', 15);
 
 -- *** STRUCTURE: `tbl_fields_upload` ***
 DROP TABLE IF EXISTS `tbl_fields_upload`;
@@ -185,7 +185,7 @@ CREATE TABLE `tbl_fields_upload` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `field_id` int(11) unsigned NOT NULL,
   `destination` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `validator` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `validator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -1121,34 +1121,34 @@ INSERT INTO `tbl_entries` (`id`, `section_id`, `author_id`, `creation_date`, `cr
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (1, 'asdc', 'enabled', 1.3);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (2, 'databasemanipulator', 'enabled', 0.4);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (4, 'eventex', 'enabled', 1.01);
-INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (5, 'export_ensemble', 'enabled', 1.9);
+INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (19, 'export_ensemble', 'enabled', 1.11);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (16, 'selectbox_link_field', 'enabled', 1.18);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (8, 'jit_image_manipulation', 'enabled', 1.05);
-INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (9, 'maintenance_mode', 'enabled', 1.1);
-INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (10, 'markdown', 'enabled', 1.8);
-INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (17, 'profiledevkit', 'enabled', '1.0.1');
+INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (20, 'maintenance_mode', 'enabled', 1.2);
+INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (22, 'markdown', 'enabled', 1.11);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (12, 'section_schemas', 'enabled', 1.4);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (13, 'color_chooser_field', 'enabled', 1.2);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (14, 'order_entries', 'enabled', 1.8);
 INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (18, 'debugdevkit', 'enabled', '1.0.8');
+INSERT INTO `tbl_extensions` (`id`, `name`, `status`, `version`) VALUES (21, 'profiledevkit', 'enabled', '1.0.4');
 
 -- *** DATA: `tbl_extensions_delegates` ***
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (21, 18, '/frontend/', 'FrontendDevKitResolve', 'frontendDevKitResolve');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (3, 5, '/system/preferences/', 'AddCustomPreferenceFieldsets', 'appendPreferences');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (23, 19, '/system/preferences/', 'AddCustomPreferenceFieldsets', 'appendPreferences');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (4, 8, '/system/preferences/', 'AddCustomPreferenceFieldsets', 'appendPreferences');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (5, 8, '/system/preferences/', 'Save', '__SavePreferences');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (6, 9, '/system/preferences/', 'AddCustomPreferenceFieldsets', 'appendPreferences');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (7, 9, '/system/preferences/', 'Save', '__SavePreferences');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (8, 9, '/system/preferences/', 'CustomActions', '__toggleMaintenanceMode');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (9, 9, '/frontend/', 'FrontendPrePageResolve', '__checkForMaintenanceMode');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (10, 9, '/frontend/', 'FrontendParamsResolve', '__addParam');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (11, 9, '/backend/', 'AppendPageAlert', '__appendAlert');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (20, 17, '/frontend/', 'ManipulateDevKitNavigation', 'manipulateDevKitNavigation');
-INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (19, 17, '/frontend/', 'FrontendDevKitResolve', 'frontendDevKitResolve');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (28, 20, '/frontend/', 'FrontendParamsResolve', '__addParam');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (27, 20, '/frontend/', 'FrontendPrePageResolve', '__checkForMaintenanceMode');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (26, 20, '/system/preferences/', 'CustomActions', '__toggleMaintenanceMode');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (25, 20, '/system/preferences/', 'Save', '__SavePreferences');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (24, 20, '/system/preferences/', 'AddCustomPreferenceFieldsets', 'appendPreferences');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (30, 21, '/frontend/', 'FrontendDevKitResolve', 'frontendDevKitResolve');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (14, 13, '/backend/', 'InitaliseAdminPageHead', 'initaliseAdminPageHead');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (15, 14, '/backend/', 'InitaliseAdminPageHead', 'appendScriptToHead');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (16, 14, '/backend/', 'AppendElementBelowView', 'appendOrderFieldId');
 INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (22, 18, '/frontend/', 'ManipulateDevKitNavigation', 'manipulateDevKitNavigation');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (31, 21, '/frontend/', 'ManipulateDevKitNavigation', 'manipulateDevKitNavigation');
+INSERT INTO `tbl_extensions_delegates` (`id`, `extension_id`, `page`, `delegate`, `callback`) VALUES (29, 20, '/backend/', 'AppendPageAlert', '__appendAlert');
 
 -- *** DATA: `tbl_fields` ***
 INSERT INTO `tbl_fields` (`id`, `label`, `element_name`, `type`, `parent_section`, `required`, `sortorder`, `location`, `show_column`) VALUES (1, 'Username', 'username', 'input', 1, 'yes', 0, 'main', 'yes');

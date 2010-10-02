@@ -110,6 +110,15 @@ CREATE TABLE `tbl_fields_checkbox` (
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- *** STRUCTURE: `tbl_fields_colorchooser` ***
+DROP TABLE IF EXISTS `tbl_fields_colorchooser`;
+CREATE TABLE `tbl_fields_colorchooser` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `field_id` (`field_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- *** STRUCTURE: `tbl_fields_date` ***
 DROP TABLE IF EXISTS `tbl_fields_date`;
 CREATE TABLE `tbl_fields_date` (
@@ -130,6 +139,17 @@ CREATE TABLE `tbl_fields_input` (
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- *** STRUCTURE: `tbl_fields_order_entries` ***
+DROP TABLE IF EXISTS `tbl_fields_order_entries`;
+CREATE TABLE `tbl_fields_order_entries` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL,
+  `force_sort` enum('yes','no') COLLATE utf8_unicode_ci DEFAULT 'no',
+  `hide` enum('yes','no') COLLATE utf8_unicode_ci DEFAULT 'no',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `field_id` (`field_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- *** STRUCTURE: `tbl_fields_select` ***
 DROP TABLE IF EXISTS `tbl_fields_select`;
 CREATE TABLE `tbl_fields_select` (
@@ -138,6 +158,18 @@ CREATE TABLE `tbl_fields_select` (
   `allow_multiple_selection` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `static_options` text COLLATE utf8_unicode_ci,
   `dynamic_options` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `field_id` (`field_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- *** STRUCTURE: `tbl_fields_selectbox_link` ***
+DROP TABLE IF EXISTS `tbl_fields_selectbox_link`;
+CREATE TABLE `tbl_fields_selectbox_link` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL,
+  `allow_multiple_selection` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `related_field_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `limit` int(4) unsigned NOT NULL DEFAULT '20',
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -174,7 +206,7 @@ CREATE TABLE `tbl_fields_upload` (
   `validator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- *** STRUCTURE: `tbl_forgotpass` ***
 DROP TABLE IF EXISTS `tbl_forgotpass`;

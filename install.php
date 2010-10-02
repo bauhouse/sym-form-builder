@@ -194,19 +194,19 @@
 		$conf['symphony']['allow_page_subscription'] = '1';
 		$conf['symphony']['lang'] = 'en';
 		$conf['symphony']['version'] = '2.1.1';
-		$conf['symphony']['pages_table_nest_children'] = 'yes';
+		$conf['symphony']['pages_table_nest_children'] = 'no';
 		$conf['log']['archive'] = '1';
 		$conf['log']['maxsize'] = '102400';
-		$conf['general']['sitename'] = 'Form Builder';
 		$conf['image']['cache'] = '1';
 		$conf['image']['quality'] = '90';
 		$conf['database']['driver'] = 'mysql';
 		$conf['database']['character_set'] = 'utf8';
 		$conf['database']['character_encoding'] = 'utf8';
 		$conf['database']['runtime_character_set_alter'] = '1';
-		$conf['database']['query_caching'] = 'default';
+		$conf['database']['disable_query_caching'] = 'no';
 		$conf['public']['display_event_xml_in_source'] = 'yes';
-		$conf['region']['time_format'] = 'H:i';
+		$conf['general']['sitename'] = 'Symphony Form Builder';
+		$conf['region']['time_format'] = 'g:i a';
 		$conf['region']['date_format'] = 'd F Y';
 		$conf['maintenance_mode']['enabled'] = 'no';
 	
